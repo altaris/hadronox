@@ -1,0 +1,45 @@
+{
+    "meta" : {
+        "course" : "Very serious course",
+        "event"  : "Exam",
+        "date"   : "42/42/2042"
+    },
+
+    "language" : {
+        "firstname"     : "Prénom",
+        "group"         : "Groupe",
+        "presencesheet" : "Feuille de présence",
+        "signature"     : "Signature",
+        "studentid"     : "Num. étudiant",
+        "surname"       : "Nom"
+    },
+
+    "targets" : [
+        {
+            "name"     : "Liste",
+            "template" : "templates/list.odt",
+            "input"    : "students.csv",
+            "output"   : "list_generated.odt",
+            "sort"     : ["surname", "firstname"],
+            "groups"   : [
+                {
+                    "column" : "group",
+                    "additionalColumns" : {
+                        "timeslot" : {
+                            "A" : "Morning",
+                            "B" : "Noon",
+                            "C" : "Evening"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name"     : "Feuille de présence",
+            "template" : "templates/presence.odt",
+            "input"    : "students.csv",
+            "output"   : "presence_generated.odt",
+            "sort"     : ["surname", "firstname"]
+        }
+    ]
+}
