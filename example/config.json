@@ -5,18 +5,10 @@
         "date"   : "42/42/2042"
     },
 
-    "language" : {
-        "firstname"     : "Prénom",
-        "group"         : "Groupe",
-        "presencesheet" : "Feuille de présence",
-        "signature"     : "Signature",
-        "studentid"     : "Num. étudiant",
-        "surname"       : "Nom"
-    },
-
     "targets" : [
         {
-            "name"     : "Liste",
+            "name"     : "list",
+            "type"     : "template",
             "template" : "templates/list.odt",
             "input"    : "students.csv",
             "output"   : "list_generated.odt",
@@ -35,11 +27,17 @@
             ]
         },
         {
-            "name"     : "Feuille de présence",
+            "name"     : "presence",
+            "type"     : "template",
             "template" : "templates/presence.odt",
             "input"    : "students.csv",
             "output"   : "presence_generated.odt",
             "sort"     : ["surname", "firstname"]
+        },
+        {
+            "name"     : "instructions",
+            "type"     : "email",
+            "input"    : "students.csv"
         }
     ]
 }
