@@ -76,7 +76,7 @@ if __name__ == "__main__":
                       help = "Targets to execute, comma-separated",
                       default = "all")
     parser.add_option("-l", "--list-targets", action = "store_true",
-                      dest = "listTargets", default = "false",
+                      dest = "listTargets", default = False,
                       help = "List available targets")
     (options, args) = parser.parse_args()
 
