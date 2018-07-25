@@ -10,6 +10,8 @@ Just type:
 hadronox.py --help
 ```
 
+# Configuration file
+
 It is written in JSON.
 
 ## `meta`
@@ -38,4 +40,11 @@ Group descriptors: A `csv` file is a list of row. This list can be divided into 
 
 ### Target type `email`
 
-Doing nothing for now.
+* `template`: Path to template email.
+* `input`: Path to input `csv` file.
+* `email`: Name of the `csv` column where the email adress of the receipients is stored.
+* `from`: Email address of the sender.
+* `host`: Address of the host SPTM server.
+* `port`: Port.
+* `username`: Username to log in to host SMTP server.
+* `subject`: Subject of the email.

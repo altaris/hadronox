@@ -5,6 +5,11 @@ import json
 import optparse
 import os
 
+import smtplib
+import email.utils
+from email.mime.text import MIMEText
+import getpass
+
 from relatorio.templates.opendocument import Template
 
 
@@ -60,7 +65,42 @@ class TemplateTarget(AbstractTarget):
 class EmailTarget(AbstractTarget):
 
     def make(self, metadatas):
-        print("Lololo")
+        data = []
+        with open(self["input"]) as csvfile:
+            data = list(csv.DictReader(csvfile))
+        template = ""
+        with open(self["template"]) as templateEmail:
+            template = templateEmail.read()
+        template = self._replacePlaceholders(template, metadatas, "meta.")
+        try:
+            server = smtplib.SMTP(self["host"], int(self["port"]))
+            server.ehlo()
+            server.starttls()
+            server.ehlo()
+            server.login(
+                self["username"],
+                getpass.getpass("Password for {}@{}: ".format(
+                    self["username"],
+                    self["host"])))
+            for row in data:
+                text = self._replacePlaceholders(template, row)
+                msg = MIMEText(text, "html")
+                msg.set_unixfrom("author")
+                msg["To"] = email.utils.formataddr(("", row[self["email"]]))
+                msg["From"] = email.utils.formataddr(("", self["from"]))
+                msg["Subject"] = self["subject"]
+                server.sendmail(self["from"], [row[self["email"]]], msg.as_string())
+        except smtplib.SMTPAuthenticationError:
+            print("Invalid password")
+        except smtplib.SMTPRecipientsRefused:
+            print("Invalid recipient: " + to_email)
+        finally:
+            server.quit()
+
+    def _replacePlaceholders(self, s, d, prefix = ""):
+        for k in d.keys():
+            s = s.replace("&lt;{}{}&gt;".format(prefix, k), str(d[k]))
+        return s
 
 
 targetTypes = {"email"    : EmailTarget,
