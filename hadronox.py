@@ -93,7 +93,7 @@ class EmailTarget(AbstractTarget):
         except smtplib.SMTPAuthenticationError:
             print("Invalid password")
         except smtplib.SMTPRecipientsRefused:
-            print("Invalid recipient: " + to_email)
+            print("Invalid recipient: " + row[self["email"]])
         finally:
             server.quit()
 
