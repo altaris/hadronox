@@ -51,9 +51,9 @@ class TemplateTarget(AbstractTarget):
                 }
                 additionalColumns = sep.get("additionalColumns", {})
                 for a in additionalColumns.keys():
-                    group[a] = additionalColumns[a].get(k, "??") 
+                    group[a] = additionalColumns[a].get(k, "??")
                 data += [group]
-            return { sep["column"] + "_list" : data }
+            return {sep["column"] + "_list" : data}
 
     def _sortKey(self, x):
         res = ""
@@ -89,7 +89,8 @@ class EmailTarget(AbstractTarget):
                 msg["To"] = email.utils.formataddr(("", row[self["email"]]))
                 msg["From"] = email.utils.formataddr(("", self["from"]))
                 msg["Subject"] = self["subject"]
-                server.sendmail(self["from"], [row[self["email"]]], msg.as_string())
+                server.sendmail(
+                    self["from"], [row[self["email"]]], msg.as_string())
         except smtplib.SMTPAuthenticationError:
             print("Invalid password")
         except smtplib.SMTPRecipientsRefused:
@@ -106,8 +107,8 @@ class EmailTarget(AbstractTarget):
 targetTypes = {"email"    : EmailTarget,
                "template" : TemplateTarget}
 
-if __name__ == "__main__":  
-    
+if __name__ == "__main__":
+
     parser = optparse.OptionParser()
     parser.add_option("-c", "--config", action = "store", dest = "config",
                       type = "string", help = "Configuration file")
@@ -128,7 +129,7 @@ if __name__ == "__main__":
             targetMap[t["name"]] = targetTypes[t["type"]](t)
         if options.listTargets:
             print("Available targets: ", sorted(targetMap.keys()))
-        else: 
+        else:
             targets = []
             if options.targets == "all":
                 targets = targetMap.keys()
