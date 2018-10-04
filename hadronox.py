@@ -25,7 +25,7 @@ class TemplateTarget(AbstractTarget):
         raw = []
         with open(self["input"]) as csvfile:
             raw = sorted(list(csv.DictReader(csvfile)),
-                         key = lambda x : self._sortKey(x))
+                         key = lambda x: self._sortKey(x))
         data = self._makeGroups(raw, self.get("groups", []))
         with open(self["output"], "wb") as outfile:
             template = Template(source = '', filepath = self["template"])
@@ -46,14 +46,14 @@ class TemplateTarget(AbstractTarget):
             data = []
             for k in sorted(groupedDict.keys()):
                 group = {
-                    "value" : k,
-                    "data"  : self._makeGroups(groupedDict[k], sepList[1:])
+                    "value": k,
+                    "data": self._makeGroups(groupedDict[k], sepList[1:])
                 }
                 additionalColumns = sep.get("additionalColumns", {})
                 for a in additionalColumns.keys():
                     group[a] = additionalColumns[a].get(k, "??")
                 data += [group]
-            return {sep["column"] + "_list" : data}
+            return {sep["column"] + "_list": data}
 
     def _sortKey(self, x):
         res = ""
@@ -90,7 +90,8 @@ class EmailTarget(AbstractTarget):
                 msg["From"] = email.utils.formataddr(("", self["from"]))
                 msg["Subject"] = self["subject"]
                 server.sendmail(
-                    self["from"], [row[self["email"]]], msg.as_string())
+                    self["from"], [row[self["email"]], self["from"]],
+                    msg.as_string())
         except smtplib.SMTPAuthenticationError:
             print("Invalid password")
         except smtplib.SMTPRecipientsRefused:
@@ -104,8 +105,8 @@ class EmailTarget(AbstractTarget):
         return s
 
 
-targetTypes = {"email"    : EmailTarget,
-               "template" : TemplateTarget}
+targetTypes = {"email": EmailTarget,
+               "template": TemplateTarget}
 
 if __name__ == "__main__":
 
