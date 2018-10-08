@@ -92,6 +92,7 @@ class EmailTarget(AbstractTarget):
                 server.sendmail(
                     self["from"], [row[self["email"]], self["from"]],
                     msg.as_string())
+                print("Sent email to " + row[self["email"]])
         except smtplib.SMTPAuthenticationError:
             print("Invalid password")
         except smtplib.SMTPRecipientsRefused:
@@ -137,6 +138,5 @@ if __name__ == "__main__":
             else:
                 targets = options.targets.split(",")
             for k in targets:
-                print("Making target " + k + " ... ", end = "")
+                print("Making target '{}'".format(k))
                 targetMap[k].make(config["meta"])
-                print("Done")
