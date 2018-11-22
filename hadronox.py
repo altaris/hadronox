@@ -84,7 +84,7 @@ class EmailTarget(AbstractTarget):
                     self["host"])))
             for row in data:
                 text = self._replacePlaceholders(template, row)
-                msg = MIMEText(text, "html")
+                msg = MIMEText(text, "text")
                 msg.set_unixfrom("author")
                 msg["To"] = email.utils.formataddr(("", row[self["email"]]))
                 msg["From"] = email.utils.formataddr(("", self["from"]))
@@ -102,7 +102,7 @@ class EmailTarget(AbstractTarget):
 
     def _replacePlaceholders(self, s, d, prefix = ""):
         for k in d.keys():
-            s = s.replace("&lt;{}{}&gt;".format(prefix, k), str(d[k]))
+            s = s.replace("<{}{}>".format(prefix, k), str(d[k]))
         return s
 
 
