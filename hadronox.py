@@ -84,7 +84,7 @@ class EmailTarget(AbstractTarget):
                     self["host"])))
             for row in data:
                 text = self._replacePlaceholders(template, row)
-                msg = MIMEText(text, "text")
+                msg = MIMEText(text)
                 msg.set_unixfrom("author")
                 msg["To"] = email.utils.formataddr(("", row[self["email"]]))
                 msg["From"] = email.utils.formataddr(("", self["from"]))
